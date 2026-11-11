@@ -1,0 +1,27 @@
+# dsh-plugin-hermano — capa bundle de DSH.
+#
+# Inserta una fila del cliente MCP oficial (@deepseek-ai/dsh-mcp-client) que
+# lanza el servidor de memoria como "hermano". Sus tools aparecen como:
+#
+#     mcp__hermano__memory_get
+#     mcp__hermano__memory_save
+#     mcp__hermano__memory_list
+#     mcp__hermano__memory_search
+#     mcp__hermano__memory_config
+#
+# El runtime vive en <DSH_HOME>/plugins/hermano (lo copia el postinstall), así
+# que este patch no contiene rutas de máquina.
+- insert:
+    - id: mcp-hermano
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: hermano
+        transport: stdio
+        command: !!js process.execPath
+        args:
+          - !!js "(process.env.DSH_HOME && process.env.DSH_HOME.trim() !== '' ? process.env.DSH_HOME : (process.env.USERPROFILE || process.env.HOME || '') + '/.dsh') + '/plugins/hermano/server.mjs'"
+        env:
+          # El host es Electron; sin esto intentaría abrir una ventana.
+          ELECTRON_RUN_AS_NODE: '1'
+        failOnStartupError: false
+        toolCallTimeoutMs: 20000

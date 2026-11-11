@@ -1,0 +1,59 @@
+{
+  "name": "dsh-plugin-hermano",
+  "version": "0.1.0",
+  "description": "Memoria persistente para DeepSeek Harness: carga PREFERENCIAS_WENDIGO.md al iniciar, inyecta las preferencias en cada sesión y guarda notas locales con confirmación, auditoría y modo read-only (mcp__hermano__*).",
+  "type": "module",
+  "license": "MIT",
+  "author": "thegabopacheco-sudo",
+  "homepage": "https://github.com/thegabopacheco-sudo/dsh-plugin-hermano#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thegabopacheco-sudo/dsh-plugin-hermano.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thegabopacheco-sudo/dsh-plugin-hermano/issues"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "mcp",
+    "memory",
+    "preferences",
+    "wendigo",
+    "windows"
+  ],
+  "main": "./dist/server.mjs",
+  "files": [
+    "dist/",
+    "docs/",
+    "cordis.patch.yml",
+    "scripts/postinstall.mjs",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build:bundle": "esbuild server.mjs --bundle --platform=node --format=esm --target=node20 --outfile=dist/server.mjs",
+    "prepack": "npm run build:bundle",
+    "postinstall": "node scripts/postinstall.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/server": "2.2.0",
+    "esbuild": "0.28.2",
+    "zod": "4.4.3"
+  }
+}
